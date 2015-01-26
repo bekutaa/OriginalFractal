@@ -19,13 +19,13 @@ public boolean lenChanging = true;
 
 public void setup()
 {
-	size(600,600);
+	size(800,800);
 	background(0);
 }
 
 public void draw()
 {
-	fractal(0,0,600);
+	fractal(0,0,width);
 
 	if(lenChanging)
 	{
@@ -56,7 +56,6 @@ public void fractal(float x, float y, float len)
 		fractal(x+(2*len/3),y,len/3);
 
 		fractal(x,y+len/3,len/3);
-//		fractal(x+len/3,y+len/3,len/3);
 		fractal(x+(2*len/3),y+len/3,len/3);
 
 		fractal(x,y+(2*len/3),len/3);
