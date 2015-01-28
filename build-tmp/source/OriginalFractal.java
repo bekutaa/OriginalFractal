@@ -14,91 +14,70 @@ import java.io.IOException;
 
 public class OriginalFractal extends PApplet {
 
-public float lenChange = 0;
-public boolean lenChanging = true;
+public float fractSize;
+public float ekkusu, wai;
+public float sizeChange = 2;
+public float increment = 1;
 
 public void setup()
 {
-	size(800,800);
-	background(0);
+  background(0);
+  size(601,601);
+  fractSize = width-1;
 }
 
 public void draw()
 {
-	fractal(0,0,width);
-
-	if(lenChanging)
-	{
-		if(lenChange > 400) { lenChange+=4; }
-		else if(lenChange > 100) { lenChange+=2; }
-		else { lenChange ++; }
-	}
-	else
-	{
-		if(lenChange < 100) { lenChange--; }
-		else if(lenChange < 400) { lenChange-=2;}
-		else { lenChange-=4; }
-	}
-
-	if(lenChange < -15 || lenChange > 700) { lenChanging = !lenChanging; }
+  background(0);
+  
+  fractal(ekkusu,wai,fractSize,true);
+  fractSize += sizeChange;
+  ekkusu-= (sizeChange/2);
+  wai-= (sizeChange/2);
+  
+  if(fractSize > width*sqrt(2)*increment && increment < 100)
+  {
+    sizeChange+=increment;
+    increment+=0.4f;
+    System.out.println(increment);
+  }
 }
 
-// public void fractal(float x, float y, float sideLength, boolean square)
-public void fractal(float x, float y, float len)
+public void fractal(float x, float y, float sideLength, boolean square)
 {
-	noStroke();
-	fill(210,140,255);
-	
-	if(len > 20+lenChange)
-	{
-		fractal(x,y,len/3);
-		fractal(x+len/3,y,len/3);
-		fractal(x+(2*len/3),y,len/3);
+  stroke(0,255,0);
+  noFill();
+  
+  if(sideLength < width*sqrt(2))
+  {
+    if(square)
+    {
+       strokeWeight(2);
+       rect(x,y,sideLength,sideLength);
+    }
+    else
+    {
+      strokeWeight(1);
+      ellipseMode(CORNER);
+      ellipse(x,y,sideLength,sideLength);
+    }
+  }
 
-		fractal(x,y+len/3,len/3);
-		fractal(x+(2*len/3),y+len/3,len/3);
-
-		fractal(x,y+(2*len/3),len/3);
-		fractal(x+len/3,y+(2*len/3),len/3);
-		fractal(x+(2*len/3),y+(2*len/3),len/3);
-	}
-	else
-	{
-		rect(x,y,len,len);
-
-		fill(0);
-		rect(x+len/3,y+len/3,len/3,len/3);
-	}
-
-	// if(square)
-	// {
-	// 	strokeWeight(2);
-	// 	rect(x,y,sideLength,sideLength);
-
-	// 	ellipseMode(CORNER);
-	// 	ellipse(x,y,sideLength,sideLength);
-	// 	rect(x+(sideLength/8),y+(sideLength/8),3*sideLength/4,3*sideLength/4);
-	// }
-	// else
-	// {
-	// 	strokeWeight(1);
-	// 	ellipseMode(CORNER);
-	// 	ellipse(x,y,sideLength,sideLength);
-	// }
-
-	// if(sideLength > 10)
-	// {
-	// 	boolean nSquare = !square;
-		
-	// 	if(nSquare)
-	// 	{
-			
-	// 	}
-	// 	else
-	// 	{
-	// 		fractal(x+sideLength,y+sideLength,sideLength,nSquare);
-	// 	}
-	// }
+  if(sideLength > 60)
+  {
+    boolean nSquare = !square;
+ 
+    if(nSquare)
+    {
+      double ex = (sideLength - (sideLength)/Math.sqrt(2))/2;
+      double ey = sideLength/Math.sqrt(2);
+      fractal((float)(x+ex),(float)(y+ex),(float)ey,nSquare);
+    }
+    else
+    {
+      fractal(x,y,sideLength,nSquare);
+    }
+  }
 }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "OriginalFractal" };
